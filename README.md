@@ -1,7 +1,8 @@
 # Docker環境構築手順
 
 - Macユーザーベースでの説明です。
-- M1チップのMacユーザー、WindowsユーザーはひとまずLaravel課題同様cloud9で環境構築をお願いします。（対応でき次第追加していきます）
+- Windowsユーザーに関してはMacユーザーとの相違点を本文中に追記しています。
+- M1チップのMacユーザーはひとまずLaravel課題同様cloud9で環境構築をお願いします。（対応でき次第追加していきます）
 ## 環境概要
 本共同開発で構築する環境は以下の構成です。（LEMP環境と呼ばれます）
 
@@ -186,7 +187,7 @@ Creating yanbaru-qiita_web_1 ... done
 
 # DBの接続を確認
 
-MySQlのクライアントツールである`Sequel Pro`をインストールします。<br>
+MySQlのクライアントツールである`Sequel Pro`をインストールします。(Macの場合)<br>
 
 参考：[Mac MySQL Sequel Proの導入方法](https://qiita.com/miriwo/items/f24e6906105386ddfa83)
 
@@ -208,7 +209,7 @@ Sequel Proを起動します。<br>
 
 ここまででMySQlに接続できない場合は各自調べてみてエラー解決に挑戦してみましょう。<br>
 
-※windowsの場合は[Mk-2](https://qiita.com/miriwo/items/f24e6906105386ddfa83)などをインストールして使用してみてください。
+※windowsの場合は[Mk-2](https://qiita.com/miriwo/items/f24e6906105386ddfa83)などをインストールして使用してみてください。<br>
 Mk-2設定参考：procedure_Mk-2.pdf
 
 
@@ -296,7 +297,7 @@ $ php artisan key:generate
 
 ## Laravelのウェルカムページの表示
 
-`loaclhost:80`をブラウザに入力してLaravelのウェルカムページが表示されれば完了です！！<br>
+`localhost:80`をブラウザに入力してLaravelのウェルカムページが表示されれば完了です！！<br>
 
 これでDocker×Laravelの環境構築は完了です。
 
