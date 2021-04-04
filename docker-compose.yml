@@ -7,7 +7,7 @@ services:
   web:
     image: nginx:1.18
     ports:
-      - '80:80'
+      - '88:80'
     depends_on:
       - app
     volumes:
@@ -29,4 +29,3 @@ services:
       TZ: 'Asia/Tokyo'
     volumes:
       - docker-volume:/var/lib/mysql
-    
