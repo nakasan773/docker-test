@@ -226,6 +226,7 @@ $ docker-compose ps
 ```
 
 現在いるディレクトリが正しいか`ls`コマンドで実行してください。（以下の出力結果になれば問題なしです）
+※Windowsの場合は`dir`コマンドから`name`を確認して下記と同じディレクトリが確認できれば問題なしです
 ```
 $ ls
 README.md		development-document	docker			docker-compose.yml	src
