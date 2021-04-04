@@ -1,7 +1,7 @@
 # Docker環境構築手順
 
 - Macユーザーベースでの説明です。
-- Windowsユーザーに関してはMacユーザーとの相違点を本文中に追記しています。
+- Windowsユーザーに関してはMacユーザーとの相違点があれば本文中に追記しています。
 - M1チップのMacユーザーはひとまずLaravel課題同様cloud9で環境構築をお願いします。（対応でき次第追加していきます）
 ## 環境概要
 本共同開発で構築する環境は以下の構成です。（LEMP環境と呼ばれます）
@@ -267,6 +267,7 @@ DB_DATABASE=.env(Docker環境用)のDATABASE_NAME
 DB_USERNAME=.env(Docker環境用)のUSER_NAME
 DB_PASSWORD=.env(Docker環境用)のPASSWORD
 ```
+※`コンテナのポート番号の確認`でローカル側のポート番号を変更されている場合は`APP_URL`や`DB_PORT`も変更が必要です
 
 一度、`Yanbaru-Qiita-App`ディレクトリに戻り、以下のコマンドを実行してappコンテナの中に入ります。
 
