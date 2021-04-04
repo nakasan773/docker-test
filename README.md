@@ -17,6 +17,9 @@
 こちらの記事からDocker fo Macをインストールしてください。<br>
 [DockerをMacにインストールする（更新: 2019/7/13）](https://qiita.com/kurkuru/items/127fa99ef5b2f0288b81)
 
+※windowsの場合はこちらの記事を参考にしてDockerをインストールしてください。<br>
+[Windows 10 HomeへのDocker Desktop (ver 3.0.0) インストールが何事もなく簡単にできるようになっていた (2020.12時点)](https://qiita.com/zaki-lknr/items/db99909ba1eb27803456)
+
 Dockerについてはこちらの記事を必ず一度読んでおいてください。<br>
 [【図解】Dockerの全体像を理解する -前編-](https://qiita.com/etaroid/items/b1024c7d200a75b992fc)
 
@@ -26,6 +29,13 @@ Dockerについてはこちらの記事を必ず一度読んでおいてくだ�
 $ cd
 $ pwd
 /Users/{ご自身のユーザー名}
+```
+
+※windowsの場合
+```
+$ cd
+$ dir
+ディレクトリ: C:\Users\{ご自身のユーザー名}
 ```
 ## リポジトリをクローン
 
@@ -43,6 +53,14 @@ $ git clone https://github.com/shimotaroo/Yanbaru-Qiita-App.git
 ```
 $ cd Yanbaru-Qiita-App
 $ ls
+README.md		development-document	docker			docker-compose.yml	src
+```
+
+※windowsの場合
+```
+$ cd Yanbaru-Qiita-App
+$ dir
+"Name"に下記があればOK
 README.md		development-document	docker			docker-compose.yml	src
 ```
 
@@ -72,7 +90,8 @@ README.md		development-document	docker			docker-compose.yml	src
 ということで`.env`を作成します。<br>
 `$ touch .env`でもいいですし、エディター上でファイルを作成してもらっても構いません。<br>
 
-ディレクトリ構成的にこの状態になればOKです。
+ディレクトリ構成的にこの状態になればOKです。<br>
+(windowsの場合`$ dir`を実行し、`name`からディレクトリ構成を確認してください。)
 
 ```
 $ ls -a
@@ -149,6 +168,7 @@ $ docker-compose build
 （略）
 Successfully built a6948df85a74
 Successfully tagged yanbaru-qiita_app:latest
+（Windowsの場合は上記と異なりビルドの成功が"Successfully built ...(略)..."で表示される場合があります）
 ```
 
 作成したDockerイメージを基にDockerコンテナを起動します。
@@ -186,7 +206,11 @@ Sequel Proを起動します。<br>
 お気に入り登録した後、「接続」ボタンで接続。<br>
 左上の「データベースを選択...」で`.env`の`DATABASE_NAME`に指定したデータベースを選択すれば完了です。
 
-ここまででMySQlに接続できない場合は各自調べてみてエラー解決に挑戦してみましょう。
+ここまででMySQlに接続できない場合は各自調べてみてエラー解決に挑戦してみましょう。<br>
+
+※windowsの場合は[Mk-2](https://qiita.com/miriwo/items/f24e6906105386ddfa83)などをインストールして使用してみてください。
+Mk-2設定参考：procedure_Mk-2.pdf
+
 
 # Laravelアプリ環境構築手順
 ## はじめに
