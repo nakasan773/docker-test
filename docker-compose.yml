@@ -29,4 +29,3 @@ services:
       TZ: 'Asia/Tokyo'
     volumes:
       - docker-volume:/var/lib/mysql
-    
