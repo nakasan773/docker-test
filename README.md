@@ -45,7 +45,7 @@ $ dir
 **※mainブランチが選択されている状態でクローンしないでください**
 
 ```
-$ git clone https://github.com/shimotaroo/Yanbaru-Qiita-App.git
+$ git clone -b ブランチ名（develop-****） https://github.com/shimotaroo/Yanbaru-Qiita-App.git
 ```
 
 `Yanbaru-Qiita-App`ディレクトリが作成されるのでその中に移動して正常にクローンされているか確認します。
