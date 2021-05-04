@@ -121,35 +121,39 @@ $ docker ps
 
 これで環境構築は完了です。
 
-# DBの接続を確認
+# DBと接続
 
-MySQlのクライアントツールである`Sequel Pro`をインストールします。(Macの場合)<br>
+## Mac
 
-参考：[Mac MySQL Sequel Proの導入方法](https://qiita.com/miriwo/items/f24e6906105386ddfa83)
+[こちらの記事](https://qiita.com/miriwo/items/f24e6906105386ddfa83)を参考にMySQLのクライアントツール`Sequel Pro`をインストール。<br>
 
 Sequel Proを起動します。<br>
+
 左下の「+」ボタンを押して以下の通り入力欄を埋めます。
 
-|入力欄|埋める文字|
+|入力欄|入力値|
 |:--:|:--:|
 |名前|yanbaru-qiita|
 |ホスト|127.0.0.1|
-|ユーザー名|.envのUSER_NAME|
-|パスワード|.envのPASSWORD|
+|ユーザー名|.envのDB_USER|
+|パスワード|.envのDB_PASSWORD|
 |データベース|空欄でOK|
 |ポート|3306|
 
 接続の前に「お気に入りに追加」を押しておくと次回からすぐに接続できます。<br>
 お気に入り登録した後、「接続」ボタンで接続。<br>
-左上の「データベースを選択...」で`.env`の`DATABASE_NAME`に指定したデータベースを選択すれば完了です。
+左上の「データベースを選択...」で`.env`の`DB_DATABASE`に指定したデータベースを選択し、接続できれば完了です。
 
-ここまででMySQlに接続できない場合は各自調べてみてエラー解決に挑戦してみましょう。<br>
+※接続できない場合は各自調べてみてエラー解決に挑戦してみましょう。<br>
 
-※windowsの場合は[Mk-2](https://qiita.com/miriwo/items/f24e6906105386ddfa83)などをインストールして使用してみてください。<br>
+## Windows
+
+[Mk-2](https://qiita.com/miriwo/items/f24e6906105386ddfa83)などをインストールして使用してみてください。<br>
 Mk-2設定参考：procedure_Mk-2.pdf
 
 
-# Laravelアプリ環境構築手順
+# Laravelの設定
+
 ## はじめに
 まずは以下の状態になっているか確認ください。
 
@@ -159,61 +163,33 @@ Mk-2設定参考：procedure_Mk-2.pdf
 Dockerコンテナの起動状態は以下コマンドから確認できます。
 
 ```
-$ docker-compose ps
+$ docker ps
 ```
 
-現在いるディレクトリが正しいか`ls`コマンドで実行してください。（以下の出力結果になれば問題なしです）
-※Windowsの場合は`dir`コマンドから`name`を確認して下記と同じディレクトリが確認できれば問題なしです
-```
-$ ls
-README.md		development-document	docker			docker-compose.yml	src
-```
-
-## Laravelプロジェクト用の.envを作成
-
-以下コマンドで`src`ディレクトリに移動します。<br>
-
-※Linuxコマンドを実行するのでも、エディター上ディレクトリ上で移動するのでもどちらでも良いです。
+起動してない場合は以下コマンドで起動してください。
 
 ```
-$ cd src
+$ docker compose up -d
 ```
 
-既存の`.env.example`を複製して`.env`という名称に変更してください。（`.env.example`と`.env`が両方できる状態になります）<br>
+## Laravel用の.env作成
+
+`src`ディレクトリに移動。<br>
+※`cd src`を実行するのでも、エディター上で移動するのでもどちらでも良いです。<br>
+
+既存の`.env.example`をコピーして`.env`を作成してください。（`.env.example`と`.env`が両方できる状態になります）<br>
 
 ※srcディレクトリ直下に`.env`があればOKです。Docker環境用の`.env`とは別ファイルですのでご注意ください。
 
-## .env編集
-
-`.env`を以下の通り変更してください。
-
-```
-APP_NAME=Laravel
-APP_ENV=local
-APP_KEY=
-APP_DEBUG=true
-APP_URL=http://localhost:80
-
-LOG_CHANNEL=stack
-
-DB_CONNECTION=mysql
-DB_HOST=db
-DB_PORT=3306
-DB_DATABASE=.env(Docker環境用)のDATABASE_NAME
-DB_USERNAME=.env(Docker環境用)のUSER_NAME
-DB_PASSWORD=.env(Docker環境用)のPASSWORD
-```
-※`コンテナのポート番号の確認`でローカル側のポート番号を変更されている場合は`APP_URL`や`DB_PORT`も変更が必要です
+## パッケージのインストールとAPP_KEYの発行
 
 一度、`Yanbaru-Qiita-App`ディレクトリに戻り、以下のコマンドを実行してappコンテナの中に入ります。
 
 ```
-$ cd ..
-$ docker-compose exec app bash
+$ docker compose exec app bash
 ```
 
 Composerで必要なパッケージをインストールします。<br>
-（こんな感じの出力結果になればOKです）
 
 ```
 $ composer install
@@ -224,7 +200,7 @@ Package manifest generated successfully.
 Use the `composer fund` command to find out more!
 ```
 
-以下のコマンドを実行
+続けて以下のコマンドを実行
 
 ```
 $ php artisan key:generate
@@ -232,16 +208,19 @@ $ php artisan key:generate
 
 `.env`の`APP_KEY`に乱数が入ります。
 
+
 ## Laravelのウェルカムページの表示
 
 `localhost:80`をブラウザに入力してLaravelのウェルカムページが表示されれば完了です！！<br>
 
-これでDocker×Laravelの環境構築は完了です。
+これで環境構築は完了です！これから共同開発を頑張っていきましょう！
 
-## 参考
+## 参考記事
 
-- [絶対に失敗しないDockerでLaravel+Vueの実行環境（LEMP環境）を構築する方法〜前編〜](https://qiita.com/shimotaroo/items/29f7878b01ee4b99b951)
-- [絶対に失敗しないDockerでLaravel6.8+Vueの実行環境（LEMP環境）を構築する方法〜後編〜](https://qiita.com/shimotaroo/items/679104b7e00dd9f89907)
+- [【導入編】絶対に失敗しないDockerでLaravel + Vue.jsの開発環境（LEMP環境）を構築する方法〜MacOS Intel Chip対応〜](https://yutaro-blog.net/2021/04/28/docker-laravel-vuejs-intel-1/)
+- [【前編】絶対に失敗しないDockerでLaravel + Vue.jsの開発環境（LEMP環境）を構築する方法〜MacOS Intel Chip対応〜](https://yutaro-blog.net/2021/04/28/docker-laravel-vuejs-intel-2/)
+- [【後編】絶対に失敗しないDockerでLaravel + Vue.jsの開発環境（LEMP環境）を構築する方法〜MacOS Intel Chip対応〜](https://yutaro-blog.net/2021/04/28/docker-laravel-vuejs-intel-3/)
+
 ## 共同開発資料
 
 `development-document`ディレクトリに以下のファイルがありますのでそちらを確認いただきチームメンバーと協力して進めてください。
@@ -252,4 +231,4 @@ $ php artisan key:generate
 |ER図.svg|ER図をブラウザで開けますのでこちらの方が見やすいです。|
 |画面遷移図.drawio|各画面の遷移図です。|
 
-※ER図、画面遷移図は別途アナウンスする**画面定義書（エクセルファイル）**にも載せております。
+※ER図、画面遷移図は別途配布する**画面定義書（エクセルファイル）**にも載せております。
