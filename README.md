@@ -1,63 +1,58 @@
-# Docker環境構築手順
+# 共同開発環境構築手順
+## はじめに
 
-- Macユーザーベースでの説明です。
-- Windowsユーザーに関してはMacユーザーとの相違点があれば本文中に追記しています。
-- M1チップのMacユーザーはひとまずLaravel課題同様cloud9で環境構築をお願いします。（対応でき次第追加していきます）
+- 環境構築を楽に行うため、Docker、Docker Composeを使用します。
+- OSはMac、Windowsどちらにも対応しています。（説明はMacベースですが、Windowsでの相違点は本文中に追記しています）
+- M1チップのMacユーザーはひとまずLaravel課題同様`cloud9`で環境構築をお願いします。（対応でき次第追加していきます）
+
 ## 環境概要
-本共同開発で構築する環境は以下の構成です。（LEMP環境と呼ばれます）
 
 |種類|名前|
 |:--:|:--:|
-|OS|linux|
+|OS|Linux|
 |Webサーバー|Nginx|
 |DBサーバー|MySQL|
 |アプリケーション|PHP|
 
-## DockerとDocker Composeを使えるようにする
+LEMP環境と呼ばれます。
 
-こちらの記事からDocker fo Macをインストールしてください。<br>
-[DockerをMacにインストールする（更新: 2019/7/13）](https://qiita.com/kurkuru/items/127fa99ef5b2f0288b81)
+## Dockerをインストール
 
-※windowsの場合はこちらの記事を参考にしてDockerをインストールしてください。<br>
-[Windows 10 HomeへのDocker Desktop (ver 3.0.0) インストールが何事もなく簡単にできるようになっていた (2020.12時点)](https://qiita.com/zaki-lknr/items/db99909ba1eb27803456)
+こちらの記事を参考にしてください。<br>
 
-Dockerについてはこちらの記事を必ず一度読んでおいてください。<br>
+- Mac：[DockerをMacにインストールする（更新: 2019/7/13）](https://qiita.com/kurkuru/items/127fa99ef5b2f0288b81)
+- Windows：[Windows 10 HomeへのDocker Desktop (ver 3.0.0) インストールが何事もなく簡単にできるようになっていた (2020.12時点)](https://qiita.com/zaki-lknr/items/db99909ba1eb27803456)
+
+ターミナルでバージョンを確認してそれぞれのバージョンが表示されたらDockerとDocker Composeが使えるようになっています。
+
+```
+$ docker -v
+$ docker compose -v
+```
+
+Dockerについてはこちらの記事を一読しておいてください。<br>
 [【図解】Dockerの全体像を理解する -前編-](https://qiita.com/etaroid/items/b1024c7d200a75b992fc)
 
-## プロジェクトのディレクトリを作成
-
-```
-$ cd
-$ pwd
-/Users/{ご自身のユーザー名}
-```
-
-※windowsの場合
-```
-$ cd
-$ dir
-ディレクトリ: C:\Users\{ご自身のユーザー名}
-```
 ## リポジトリをクローン
 
-メンターから指定のあった`develop-****`ブランチを選択して、以下コマンドでローカルにクローンします。<br>
-
-**※mainブランチが選択されている状態でクローンしないでください**
+以下コマンドでローカルクローンします。（クローンする場所はデスクトップでもユーザーディレクトリでも構いません）
 
 ```
 $ git clone -b ブランチ名（develop-****） https://github.com/shimotaroo/Yanbaru-Qiita-App.git
 ```
 
-`Yanbaru-Qiita-App`ディレクトリが作成されるのでその中に移動して正常にクローンされているか確認します。
+※ブランチ名は担当メンターから指示がありますので必ず指定してください。
 
+`Yanbaru-Qiita-App`ディレクトリが作成されるのでその中に移動して正常にクローンされているか確認します。<br>
 
+※Macの場合
 ```
 $ cd Yanbaru-Qiita-App
 $ ls
 README.md		development-document	docker			docker-compose.yml	src
 ```
 
-※windowsの場合
+※Windowsの場合
 ```
 $ cd Yanbaru-Qiita-App
 $ dir
@@ -65,125 +60,66 @@ $ dir
 README.md		development-document	docker			docker-compose.yml	src
 ```
 
-## .envファイル作成
+## .env作成
+`.env.example`をコピーして`.env`を作成。<br>
 
-まず、`docker-compose.yml`をdbコンテナの部分を確認ください。
+以下の項目に任意の値を設定してください。<br>
 
-```yml
-  db:
-    image: mysql:5.7
-    ports:
-      - '3306:3306'
-    environment:
-      MYSQL_DATABASE: ${DATABASE_NAME}
-      MYSQL_USER: ${USER_NAME}
-      MYSQL_PASSWORD: ${PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${ROOT_PASSWORD}
-      TZ: 'Asia/Tokyo'
-    volumes:
-      - docker-volume:/var/lib/mysql
+```:env
+DB_DATABASE=
+DB_USER=
+DB_PASSWORD=
 ```
-
-`${DATABASE_NAME}`など（4つあります）は別ファイルに定義した環境変数を使用しています。<br>
-`docker-compose.yml`はGit管理している(＝GitHubに上げている)のでDBのパスワードが誰にでも見れる状態であり、セキュリティ上よくないです。<br>
-今回の共同開発で作成するアプリは実際にリリースすることはないですが、この「重要な情報をGitHubに上げてはならない」ということを覚えておいていただきたく、このような仕様にしています。<br>
-
-ということで`.env`を作成します。<br>
-`$ touch .env`でもいいですし、エディター上でファイルを作成してもらっても構いません。<br>
-
-ディレクトリ構成的にこの状態になればOKです。<br>
-(windowsの場合`$ dir`を実行し、`name`からディレクトリ構成を確認してください。)
-
-```
-$ ls -a
-.			.env			.gitignore		development-document	docker-compose.yml
-..			.git			README.md		docker			src
-```
-
-`.env`に以下を追記ください。
-
-```
-DATABASE_NAME=任意
-USER_NAME=任意
-PASSWORD=任意
-ROOT_PASSWORD=任意
-```
-
-それぞれの"任意"のところにご自身で値を設定してください。<br>
-ここで設定した値が`docker-compose.yml`の`${****}`で読み込まれます。<br>
 
 なお、`.gitigonre`ファイルで`.env`をGit管理下から外しています。<br>
-（間違えて`.env`をGitHubにpushしないようにしてください）<br>
+（起こらないと思いますが、`.env`をGitHubにpushしないようにしてください）<br>
 
 参考：[docker-compose.ymlで.envファイルに定義した環境変数を使う](https://kitigai.hatenablog.com/entry/2019/05/08/003000)
 
 ## コンテナのポート番号の確認
 
-`docker-compose.yml`の`web`コンテナ
+`web`コンテナ
 
-```yml
+```yml：docker-compose.yml
   web:
     image: nginx:1.18
     ports:
       - '80:80'
-    depends_on:
-      - app
-    volumes:
-      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
-      - ./src/:/var/www/html
+    //略
 ```
 
 'db'コンテナ
 
-```yml
+```yml:docker-compose.yml
   db:
     image: mysql:5.7
     ports:
       - '3306:3306'
-    environment:
-      MYSQL_DATABASE: ${DATABASE_NAME}
-      MYSQL_USER: ${USER_NAME}
-      MYSQL_PASSWORD: ${PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${ROOT_PASSWORD}
-      TZ: 'Asia/Tokyo'
-    volumes:
-      - docker-volume:/var/lib/mysql
+    // 略
+
 ```
 
-のローカル側のポート番号（portsの:の左側の番号）をご自身の別のDocker環境で使っている場合は適宜
+のローカル側のポート番号（portsの:の左側の番号）をもしご自身の別のDocker環境で使っている場合は適宜以下の数字等に変更してください。<br>
+（初めてDockerを使う方や他にDockerコンテナを起動させていない方は変更不要です）
 
 - web：88、8000、8888
 - db：3307、4306、5306、
 
-などに変更してみてください。<br>
+## ビルド&コンテナ起動
 
-初めてDockerを使う方や他にDockerコンテナを起動させていない方はデフォルトから変更しなくても問題なく環境構築できます。
-
-## Dockerイメージのビルド & Dockerコンテナの起動
-
-`Yanbaru-Qiita-App`ディレクトリで以下のコマンドを実行してDockerイメージをビルドします。
+`Yanbaru-Qiita-App`ディレクトリで以下のコマンドを実行してビルド＆コンテナ起動します。
 
 ```
-$ docker-compose build
-
-（略）
-Successfully built a6948df85a74
-Successfully tagged yanbaru-qiita_app:latest
-（Windowsの場合は上記と異なりビルドの成功が"Successfully built ...(略)..."で表示される場合があります）
+$ docker compose up -d --build
 ```
 
-作成したDockerイメージを基にDockerコンテナを起動します。
+以下コマンドで3つのコンテナが起動（Up）しているのを確認できたらOKです。
 
 ```
-$ docker-compose up -d
-
-（略）
-Creating yanbaru-qiita_db_1  ... done
-Creating yanbaru-qiita_app_1 ... done
-Creating yanbaru-qiita_web_1 ... done
+$ docker ps
 ```
 
-これでDockerを使ったLEMP環境の構築は完了です。
+これで環境構築は完了です。
 
 # DBの接続を確認
 
