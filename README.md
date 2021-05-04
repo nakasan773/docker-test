@@ -16,7 +16,9 @@
 
 LEMP環境と呼ばれます。
 
-## Dockerをインストール
+## Dockerでの環境構築
+
+### Dockerをインストール
 
 こちらの記事を参考にしてください。<br>
 
@@ -33,7 +35,7 @@ $ docker compose -v
 Dockerについてはこちらの記事を一読しておいてください。<br>
 [【図解】Dockerの全体像を理解する -前編-](https://qiita.com/etaroid/items/b1024c7d200a75b992fc)
 
-## リポジトリをクローン
+### リポジトリをクローン
 
 以下コマンドでローカルクローンします。（クローンする場所はデスクトップでもユーザーディレクトリでも構いません）
 
@@ -60,7 +62,7 @@ $ dir
 README.md		development-document	docker			docker-compose.yml	src
 ```
 
-## .env作成
+### .env作成
 `.env.example`をコピーして`.env`を作成。<br>
 
 以下の項目に任意の値を設定してください。<br>
@@ -76,7 +78,7 @@ DB_PASSWORD=
 
 参考：[docker-compose.ymlで.envファイルに定義した環境変数を使う](https://kitigai.hatenablog.com/entry/2019/05/08/003000)
 
-## コンテナのポート番号の確認
+### コンテナのポート番号の確認
 
 `web`コンテナ
 
@@ -105,7 +107,7 @@ DB_PASSWORD=
 - web：88、8000、8888
 - db：3307、4306、5306、
 
-## ビルド&コンテナ起動
+### ビルド&コンテナ起動
 
 `Yanbaru-Qiita-App`ディレクトリで以下のコマンドを実行してビルド＆コンテナ起動します。
 
@@ -121,9 +123,9 @@ $ docker ps
 
 これで環境構築は完了です。
 
-# DBと接続
+## DBと接続
 
-## Mac
+### Mac
 
 [こちらの記事](https://qiita.com/miriwo/items/f24e6906105386ddfa83)を参考にMySQLのクライアントツール`Sequel Pro`をインストール。<br>
 
@@ -146,15 +148,15 @@ Sequel Proを起動します。<br>
 
 ※接続できない場合は各自調べてみてエラー解決に挑戦してみましょう。<br>
 
-## Windows
+### Windows
 
 [Mk-2](https://qiita.com/miriwo/items/f24e6906105386ddfa83)などをインストールして使用してみてください。<br>
 Mk-2設定参考：procedure_Mk-2.pdf
 
 
-# Laravelの設定
+## Laravelの設定
 
-## はじめに
+### 前提
 まずは以下の状態になっているか確認ください。
 
 - Dockerコンテナが3つ（web、db、app）が起動している
@@ -172,7 +174,7 @@ $ docker ps
 $ docker compose up -d
 ```
 
-## Laravel用の.env作成
+### Laravel用の.env作成
 
 `src`ディレクトリに移動。<br>
 ※`cd src`を実行するのでも、エディター上で移動するのでもどちらでも良いです。<br>
@@ -181,7 +183,7 @@ $ docker compose up -d
 
 ※srcディレクトリ直下に`.env`があればOKです。Docker環境用の`.env`とは別ファイルですのでご注意ください。
 
-## パッケージのインストールとAPP_KEYの発行
+### パッケージのインストールとAPP_KEYの発行
 
 一度、`Yanbaru-Qiita-App`ディレクトリに戻り、以下のコマンドを実行してappコンテナの中に入ります。
 
@@ -206,22 +208,24 @@ Use the `composer fund` command to find out more!
 $ php artisan key:generate
 ```
 
-`.env`の`APP_KEY`に乱数が入ります。
+`.env`の`APP_KEY`に乱数が入ります。<br>
+
+このケースのようにDocker環境の場合、`php artisan`コマンドはappコンテナの中で実行しますので覚えておきましょう。
 
 
-## Laravelのウェルカムページの表示
+### Laravelのウェルカムページの表示
 
 `localhost:80`をブラウザに入力してLaravelのウェルカムページが表示されれば完了です！！<br>
 
 これで環境構築は完了です！これから共同開発を頑張っていきましょう！
 
-## 参考記事
+# 参考記事
 
 - [【導入編】絶対に失敗しないDockerでLaravel + Vue.jsの開発環境（LEMP環境）を構築する方法〜MacOS Intel Chip対応〜](https://yutaro-blog.net/2021/04/28/docker-laravel-vuejs-intel-1/)
 - [【前編】絶対に失敗しないDockerでLaravel + Vue.jsの開発環境（LEMP環境）を構築する方法〜MacOS Intel Chip対応〜](https://yutaro-blog.net/2021/04/28/docker-laravel-vuejs-intel-2/)
 - [【後編】絶対に失敗しないDockerでLaravel + Vue.jsの開発環境（LEMP環境）を構築する方法〜MacOS Intel Chip対応〜](https://yutaro-blog.net/2021/04/28/docker-laravel-vuejs-intel-3/)
 
-## 共同開発資料
+# 共同開発資料
 
 `development-document`ディレクトリに以下のファイルがありますのでそちらを確認いただきチームメンバーと協力して進めてください。
 
