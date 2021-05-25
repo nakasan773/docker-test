@@ -22,12 +22,12 @@ services:
       - DB_CONNECTION=${DB_CONNECTION}
       - DB_HOST=db
       - DB_PORT=${DB_PORT}
-      - DB_DATABASE=${DB_NAME}
+      - DB_DATABASE=${DB_DATABASE}
       - DB_USERNAME=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
 
   db:
-    image: mysql:5.7
+    image: mariadb:10.3
     ports:
       - ${DB_PORT}:3306
     environment:
