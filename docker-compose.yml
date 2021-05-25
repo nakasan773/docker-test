@@ -27,7 +27,7 @@ services:
       - DB_PASSWORD=${DB_PASSWORD}
 
   db:
-    image: mariadb:10.3
+    image: mysql:5.7
     ports:
       - ${DB_PORT}:3306
     environment:
